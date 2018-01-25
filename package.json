@@ -1,0 +1,14 @@
+{
+  "name": "todo-api",
+  "version": "1.0.0",
+  "description": "Node Todo Api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chirag SHah",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^2.2.5"
+  }
+}
