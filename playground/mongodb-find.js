@@ -1,4 +1,3 @@
-
 //mongod.exe --dbpath /Users/admin/mongo-data
 // C:\program files\mongodb\server\3.6\bin
 //const MongoClient = require('mongodb').MongoClient;
