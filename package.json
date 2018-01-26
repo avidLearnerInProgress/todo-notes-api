@@ -4,10 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server/server.js",
     "test": "mocha server/**/*-test.js",
     "test-watch": "nodemon --exec \"npm test\""
   },
-  "author": "",
+  "engines":{
+    "node": "8.9.4"
+  },
+  "author": "Chirag Shah",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
