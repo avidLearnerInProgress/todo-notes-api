@@ -69,6 +69,36 @@ app.delete('/todos/:id', (req,res) =>{
 
 });
 
+//pick takes limited properties from json and sets them to body var
+app.patch('/todos/:id', (req,res) =>{
+  var id = req.params.id;
+  var body = _.pick(req.body, ['text', 'completed']);
+
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send();
+  }
+
+
+  if(_.isBoolean(body.completed) && body.completed){
+      body.completedAt = new Date().getTime(); 
+  }
+  else{
+    body.complete = false;
+    body.completedAt = null;
+  }
+
+  Todo.findByIdAndUpdate(id, {$set:body}, {$new:true}).then((todo) =>{
+      if(!todo){
+        return res.status(404).send();
+      }
+
+  }).catch((e) =>{
+    res.status(404).send();
+  })
+
+
+});
+
 app.listen(port, () => {
   console.log(`Started up at port ${port}`);
 });
