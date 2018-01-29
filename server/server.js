@@ -1,6 +1,7 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var {ObjectID} = require('mongodb');
+const _ = require('lodash');
+const express = require('express');
+const bodyParser = require('body-parser');
+const {ObjectID} = require('mongodb');
 
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
@@ -45,32 +46,29 @@ app.get('/todos/:id', (req, res) => {
 
     res.send({todo});
   }).catch((e) => {
-    res.status(400).send(e);
+    res.status(400).send();
   });
 });
 
-
-app.delete('/todos/:id', (req,res) =>{
-
+app.delete('/todos/:id', (req, res) => {
   var id = req.params.id;
 
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
 
-  Todo.findOneAndRemove(id).then((todo) => {
+  Todo.findByIdAndRemove(id).then((todo) => {
     if (!todo) {
       return res.status(404).send();
     }
-    res.status(200).send({todo});
-  }).catch((e) => {
-    res.status(400).send(e);
-  });
 
+    res.send({todo});
+  }).catch((e) => {
+    res.status(400).send();
+  });
 });
 
-//pick takes limited properties from json and sets them to body var
-app.patch('/todos/:id', (req,res) =>{
+app.patch('/todos/:id', (req, res) => {
   var id = req.params.id;
   var body = _.pick(req.body, ['text', 'completed']);
 
@@ -78,25 +76,22 @@ app.patch('/todos/:id', (req,res) =>{
     return res.status(404).send();
   }
 
-
-  if(_.isBoolean(body.completed) && body.completed){
-      body.completedAt = new Date().getTime(); 
-  }
-  else{
-    body.complete = false;
+  if (_.isBoolean(body.completed) && body.completed) {
+    body.completedAt = new Date().getTime();
+  } else {
+    body.completed = false;
     body.completedAt = null;
   }
 
-  Todo.findByIdAndUpdate(id, {$set:body}, {$new:true}).then((todo) =>{
-      if(!todo){
-        return res.status(404).send();
-      }
+  Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) => {
+    if (!todo) {
+      return res.status(404).send();
+    }
 
-  }).catch((e) =>{
-    res.status(404).send();
+    res.send({todo});
+  }).catch((e) => {
+    res.status(400).send();
   })
-
-
 });
 
 app.listen(port, () => {
@@ -104,3 +99,11 @@ app.listen(port, () => {
 });
 
 module.exports = {app};
+
+
+
+
+
+
+
+//pick takes limited properties from json and sets them to body var
