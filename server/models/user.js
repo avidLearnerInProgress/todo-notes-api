@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
+
 
 var User = mongoose.model('Users', {
 	email: {
@@ -11,3 +11,4 @@ var User = mongoose.model('Users', {
 });
 
 module.exports = {User};
+
